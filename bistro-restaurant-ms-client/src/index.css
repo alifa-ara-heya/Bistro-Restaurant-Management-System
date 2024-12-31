@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.carousel .thumbs-wrapper {
+  @apply flex justify-center items-center;
+}
+
+.carousel .thumb {
+  @apply mx-1;
+}
+
+.carousel .thumb img {
+  @apply rounded;
+}
+
+.swiper-pagination-bullet {
+  bottom: -20px !important;
+  /* @apply bg-blue-300 !important; */
+}
+
+/* .swiper-pagination-bullets {
+  @apply bottom-0 !important;
+} */
+.swiper-pagination {
+  /* @apply static !important; */
+  position: relative !important;
+  /* bottom: -20px !important; */
+  /* margin-bottom: 10px; */
+  @apply mb-6 text-center -bottom-5 md:-bottom-6 z-40 !important;
+}
+
+.react-tabs__tab--selected {
+  @apply text-[#BB8506] pb-2 border-b-[#BB8506] border-b-2  !important;
+}
+
+.react-tabs__tab-list {
+  @apply flex items-center justify-center border-none !important;
+}
