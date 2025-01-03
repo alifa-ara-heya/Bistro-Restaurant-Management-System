@@ -27,7 +27,7 @@ const Order = () => {
 
     const drinks = menu.filter(item => item.category === 'drinks');
 
-    console.log(category);
+    // console.log(category);
     return (
         <div>
             <Helmet>

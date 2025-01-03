@@ -1,11 +1,53 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-
+import { AuthContext } from "../../providers/AuthProvider";
+import Swal from 'sweetalert2'
+import { FaShoppingCart } from "react-icons/fa";
+import useCart from "../../hooks/useCart";
 const NavBar = () => {
+
+    const { user, logOut } = useContext(AuthContext);
+    const [cart] = useCart();
+
+    const handleLogOut = async () => {
+
+        try {
+            await logOut(); // Ensure logout completes
+            await Swal.fire({
+                title: "Success",
+                text: "Successfully Logged Out",
+                icon: "success",
+            });
+        } catch (err) {
+            // console.error("Logout Failed:", err);
+            await Swal.fire({
+                title: "Error",
+                text: err.message || "Failed to log out. Please try again.",
+                icon: "error",
+            });
+        }
+    }
 
     const navOptions = <>
         <li><Link to='/'>Home</Link></li>
         <li><Link to='/menu'>Menu</Link></li>
         <li><Link to='/order/salad'>Order</Link></li>
+        <li><Link to='/signUp'>SignUp</Link></li>
+
+        <li><Link to='/dashboard/cart'>
+            <button className="btn">
+                <FaShoppingCart className="mr-2" />
+                <div className="badge badge-secondary">{cart.length}</div>
+            </button>
+        </Link></li>
+
+        {
+            user ?
+                <button onClick={handleLogOut}>LogOut</button>
+                :
+                <li><Link to='/login'>Login</Link></li>
+        }
+
     </>
 
     return (
@@ -27,7 +69,12 @@ const NavBar = () => {
                         {navOptions}
                     </ul>
                 </div>
-                <div className="navbar-end ">
+                <div className="navbar-end gap-3">
+                    {user && <>
+                        <span>{user?.displayName}</span>
+                        <img src={user?.photoURL} alt="" className="w-12 h-12 object-cover rounded-full" />
+
+                    </>}
                     <a className="btn">Get started</a>
                 </div>
             </div>
