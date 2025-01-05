@@ -72,7 +72,7 @@ const NavBar = () => {
                 <div className="navbar-end gap-3">
                     {user && <>
                         <span>{user?.displayName}</span>
-                        <img src={user?.photoURL} alt="" className="w-12 h-12 object-cover rounded-full" />
+                        <img src={user?.photoURL} alt="" className="w-12 h-12 object-cover rounded-full" referrerPolicy="no-referrer" />
 
                     </>}
                     <a className="btn">Get started</a>

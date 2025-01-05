@@ -6,12 +6,16 @@ import { AuthContext } from '../../providers/AuthProvider';
 import { useForm } from "react-hook-form"
 import Swal from 'sweetalert2';
 import axios from 'axios'
+import useAxiosPublic from '../../hooks/useAxiosPublic';
+import SocialLogin from '../../components/SocialLogin';
+
 
 
 const SignUp = () => {
+    const axiosPublic = useAxiosPublic();
     const { createUser, updateUserProfile } = useContext(AuthContext)
     const navigate = useNavigate();
-    // const from = location?.state?.from?.pathname || '/'
+    const from = location?.state?.from?.pathname || '/'
     const {
         register,
         handleSubmit,
@@ -35,23 +39,34 @@ const SignUp = () => {
             const user = result.user;
             console.log('Sign Up User:', user);
 
-            //3. Save username & profile photo
+            //4. Save username & profile photo
             await updateUserProfile(data.name, imageURL)
 
-            // 4. Show success message
-            await Swal.fire({
-                title: "Success",
-                text: "Successfully Registered",
-                icon: "success"
-            });
+            const userInfo = {
+                name: data.name,
+                email: data.email,
+            }
 
+            // 5. Save user info to the database
+            const response = await axiosPublic.post('/users', userInfo)
+            if (response.data.insertedId) {
+                console.log(response);
+                // 4. Show success message
+                await Swal.fire({
+                    title: "Success",
+                    text: "Successfully Registered",
+                    icon: "success"
+                });
+            }
+
+            // 6. Reset form and navigate to the login page
             reset();
-            // navigate(from, { replace: true })
+            navigate(from, { replace: true })
             // navigate('/')
 
             // 5. Log out the user and navigate to the login page
             // await logOut();
-            navigate('/login')
+            // navigate('/login')
         } catch (err) {
             await Swal.fire({
                 title: "Error",
@@ -212,6 +227,8 @@ const SignUp = () => {
                                 </Link>
                             </span>
                         </p>
+                        <SocialLogin />
+
                     </form>
                 </div>
             </div>

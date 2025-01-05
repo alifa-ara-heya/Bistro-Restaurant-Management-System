@@ -5,6 +5,7 @@ import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-s
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../providers/AuthProvider';
 import Swal from 'sweetalert2';
+import SocialLogin from '../../components/SocialLogin';
 
 const LogIn = () => {
     const { signIn } = useContext(AuthContext);
@@ -123,6 +124,7 @@ const LogIn = () => {
                                 </Link>
                             </span>
                         </p>
+                        <SocialLogin />
 
                     </form>
 

@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import { app } from "../firebase/firebase.config";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 
 
 export const AuthContext = createContext(null);
@@ -9,6 +10,10 @@ const auth = getAuth(app);
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const axiosPublic = useAxiosPublic();
+
+    const googleProvider = new GoogleAuthProvider();
+
 
     const createUser = (email, password) => {
         setLoading(true)
@@ -32,18 +37,37 @@ const AuthProvider = ({ children }) => {
         })
     }
 
+    const googleSignIn = () => {
+        setLoading(true);
+        return signInWithPopup(auth, googleProvider)
+    }
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async currentUser => {
             setUser(currentUser)
-            if (currentUser === null) {
-                console.log('No user is logged in.');
+            if (currentUser) {
+                const userInfo = { email: currentUser.email }
+                //get token and store client side
+                //why axiosPublic because I should give everybody token
+                const { data } = await axiosPublic.post('/jwt', userInfo)
+                console.log('JWT Response:', data);
+                console.log(data.token);
+                if (data.token) {
+                    localStorage.setItem('access-token', data.token)
+                    console.log('Token saved to localStorage:', data.token);
+                }
+
+
+            } else {
+                //remove token
+                localStorage.removeItem('access-token')
+                console.log('Token removed from localStorage');
             }
-            console.log('CurrentUser', currentUser?.email);
+            console.log('CurrentUser email', currentUser?.email);
             setLoading(false)
         })
         return () => {
-            return unsubscribe(); //so that when the application closes, it no longer watches
+            return unsubscribe(); //so that when the application closes, it no longer watches, Cleanup listener
         }
     }, [])
 
@@ -53,7 +77,8 @@ const AuthProvider = ({ children }) => {
         createUser,
         signIn,
         logOut,
-        updateUserProfile
+        updateUserProfile,
+        googleSignIn
     }
 
     return (
