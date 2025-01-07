@@ -69,7 +69,7 @@ const AuthProvider = ({ children }) => {
         return () => {
             return unsubscribe(); //so that when the application closes, it no longer watches, Cleanup listener
         }
-    }, [])
+    }, [axiosPublic])
 
     const authInfo = {
         user,
