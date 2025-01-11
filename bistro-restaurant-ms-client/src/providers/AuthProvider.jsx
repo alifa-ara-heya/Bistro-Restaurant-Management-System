@@ -55,6 +55,7 @@ const AuthProvider = ({ children }) => {
                 if (data.token) {
                     localStorage.setItem('access-token', data.token)
                     console.log('Token saved to localStorage:', data.token);
+                    setLoading(false)
                 }
 
 
@@ -62,9 +63,10 @@ const AuthProvider = ({ children }) => {
                 //remove token
                 localStorage.removeItem('access-token')
                 console.log('Token removed from localStorage');
+                setLoading(false)
+
             }
             console.log('CurrentUser email', currentUser?.email);
-            setLoading(false)
         })
         return () => {
             return unsubscribe(); //so that when the application closes, it no longer watches, Cleanup listener

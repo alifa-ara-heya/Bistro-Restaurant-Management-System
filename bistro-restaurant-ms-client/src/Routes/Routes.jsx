@@ -18,6 +18,9 @@ import ManageItems from "../pages/Dashboard/ManageItems";
 import UpdateItem from "../pages/Dashboard/UpdateItem";
 import Payment from "../pages/Dashboard/Payment";
 import PaymentHistory from "../pages/Dashboard/PaymentHistory";
+import UserHome from "../pages/Dashboard/UserHome";
+import AdminHome from './../pages/Dashboard/AdminHome';
+import Secret from "../pages/Shared/Secret";
 
 const router = createBrowserRouter([
     {
@@ -43,6 +46,10 @@ const router = createBrowserRouter([
             {
                 path: 'signUp',
                 element: <SignUp />
+            },
+            {
+                path: 'secret',
+                element: <PrivateRoute><Secret></Secret></PrivateRoute>
             }
         ],
     },
@@ -54,6 +61,10 @@ const router = createBrowserRouter([
 
         children: [
             //normal user routes
+            {
+                path: 'userHome',
+                element: <UserHome />
+            },
             {
                 path: 'cart',
                 element: <Cart />
@@ -68,6 +79,12 @@ const router = createBrowserRouter([
             },
 
             //admin routes
+            {
+                path: 'adminHome',
+                element: <AdminRoute>
+                    <AdminHome />
+                </AdminRoute>
+            },
             {
                 path: 'addItems',
                 element: <AdminRoute>
