@@ -8,7 +8,8 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 
 // middleware
-app.use(cors());
+app.use(express.json())
+// app.use(cors());
 app.use(
     cors({
         origin: [
@@ -44,10 +45,15 @@ async function run() {
 
         //jwt related api
         app.post('/jwt', async (req, res) => {
+
             const user = req.body;
+            console.log(user);
+
+
             const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
                 expiresIn: '7h'
             })
+            console.log(token);
             res.send({ token })
         })
 
@@ -112,7 +118,7 @@ async function run() {
             //insert email if user doesn't exist
             //it can be done in many ways- (1. making email unique like index, 2. upsert 3. simple checking)
 
-            const query = { email: user.email }
+            const query = { email: user?.email }
             const existingUser = await userCollection.findOne(query)
             if (existingUser) {
                 return res.send({ message: 'User already exists', insertedId: null })

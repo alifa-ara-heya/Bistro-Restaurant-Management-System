@@ -43,20 +43,25 @@ const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async currentUser => {
+        const unsubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser)
             if (currentUser) {
                 const userInfo = { email: currentUser.email }
                 //get token and store client side
                 //why axiosPublic because I should give everybody token
-                const { data } = await axiosPublic.post('/jwt', userInfo)
-                console.log('JWT Response:', data);
-                console.log(data.token);
-                if (data.token) {
-                    localStorage.setItem('access-token', data.token)
-                    console.log('Token saved to localStorage:', data.token);
-                    setLoading(false)
-                }
+                console.log(userInfo);
+                axiosPublic.post('/jwt', userInfo)
+                    .then(res => {
+                        if (res.data.token) {
+                            localStorage.setItem('access-token', res.data.token)
+                            console.log('Token saved to localStorage:', res.data.token);
+                            setLoading(false)
+                        }
+                    })
+
+                // console.log('JWT Response:', data);
+                // console.log(data.token);
+
 
 
             } else {

@@ -4,7 +4,9 @@ import useAuth from "./useAuth";
 
 const axiosSecure = axios.create({
     // baseURL: 'http://localhost:5000',
-    baseURL: 'https://bistro-restaurant-ms-server-7dv31qurj-alifa-ara-heyas-projects.vercel.app',
+    // baseURL: 'https://bistro-restaurant-ms-server-7dv31qurj-alifa-ara-heyas-projects.vercel.app',
+    baseURL: 'https://bistro-restaurant-ms-server.vercel.app',
+
 })
 
 

@@ -108,7 +108,7 @@ const router = createBrowserRouter([
                 element: <AdminRoute>
                     <UpdateItem />
                 </AdminRoute>,
-                loader: ({ params }) => fetch(`https://bistro-restaurant-ms-server-7dv31qurj-alifa-ara-heyas-projects.vercel.app/menu/${params.id}`)
+                loader: ({ params }) => fetch(`https://bistro-restaurant-ms-server.vercel.app/menu/${params.id}`)
             },
         ]
     }
